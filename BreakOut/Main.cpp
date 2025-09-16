@@ -19,23 +19,23 @@ int main()
     while (!slShouldClose()&& !exitGame)
     {
 
-        switch (option)
-        {
-        //case MAINMENU::PLAYERVSCPU:
-        //    GameLoop(GameMode::CPU);
+        //switch (option)
+        //{
+        ////case MAINMENU::PLAYERVSCPU:
+        ////    GameLoop(GameMode::CPU);
+        ////    break;
+        ////case MAINMENU::PLAYERVSPLAYER:
+        ////    GameLoop(GameMode::Player);
+        ////    break;
+        ////case MAINMENU::CREDITS:
+        ////    Credits();
+        ////    break;
+        ////case MAINMENU::EXIT:
+        ////    exitGame = true;
         //    break;
-        //case MAINMENU::PLAYERVSPLAYER:
-        //    GameLoop(GameMode::Player);
+        //default:
         //    break;
-        //case MAINMENU::CREDITS:
-        //    Credits();
-        //    break;
-        //case MAINMENU::EXIT:
-        //    exitGame = true;
-            break;
-        default:
-            break;
-        }
+        //}
 
         slRender();
     }
