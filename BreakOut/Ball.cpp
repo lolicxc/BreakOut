@@ -7,6 +7,7 @@ Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius
 
 void Launch(Ball& ball)
 {
+
 }
 
 void Update(Ball& ball, Paddle& paddle1)
