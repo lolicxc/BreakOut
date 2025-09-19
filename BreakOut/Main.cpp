@@ -1,13 +1,13 @@
 #include "sl.h"
 //#include "MainMenu.h"
-//#include "GameLoop.h"
+#include "Game.h"
 #include "Draw.h"
 #include <ctime>
 int main()
 {
     srand(time(NULL));
 
-    const int screenWidth = 1280;
+    const int screenWidth = 640;
     const int screenHeight = 720;
 
 
@@ -18,7 +18,7 @@ int main()
 
     while (!slShouldClose()&& !exitGame)
     {
-
+        GameLoop();
         //switch (option)
         //{
         ////case MAINMENU::PLAYERVSCPU:

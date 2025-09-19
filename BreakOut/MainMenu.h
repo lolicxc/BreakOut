@@ -13,7 +13,6 @@ enum class MAINMENU
 };
 
 
-MAINMENU InputMainMenu();
 void Credits();
 
 

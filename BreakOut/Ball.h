@@ -13,8 +13,8 @@ struct Ball
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed);
 void Launch(Ball& ball);
-void Update(Ball& ball, Paddle& paddle1);
-void CheckScore(Ball& ball, Paddle& paddle1);
+void Update(Ball& ball, Paddle& paddle);
+void CheckScore(Ball& ball, Paddle& paddle);
 bool CheckCollisionPaddle(Ball& ball, Paddle& paddle);
 bool CheckCollisionWall(Ball& ball);
 

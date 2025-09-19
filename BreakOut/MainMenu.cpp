@@ -1,14 +1,6 @@
 #include "MainMenu.h"
 #include "Draw.h"
 
-MAINMENU InputMainMenu()
-{
-    int mouseXPos = slGetMouseX();
-    int mouseYPos = slGetMouseY();
-    int fontSize = 40;
-
-    DrawMainMenu();
-}
 
 
 void Credits()
