@@ -5,14 +5,13 @@
 enum class MAINMENU
 {
 	NONE,
-	PLAYERVSPLAYER,
-	PLAYERVSCPU,
+	PLAY,
 	CREDITS,
 	EXIT
 
 };
 
-
+MAINMENU InputMainMenu();
 void Credits();
 
 

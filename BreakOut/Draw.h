@@ -5,6 +5,7 @@
 
 
 void DrawMainMenu();
+void DrawButton(float x, float y, float width, float height, const char* text, int buttonColor, int textColor);
 void DrawScore(Paddle& paddle);
 void DrawBall(Ball ball);
 void DrawPaddle(Paddle paddle);

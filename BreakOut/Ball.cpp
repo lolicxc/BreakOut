@@ -1,4 +1,4 @@
-#include "Ball.h"
+Ôªø#include "Ball.h"
 #include "sl.h"
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed)
@@ -34,17 +34,17 @@ void Update(Ball& ball, Paddle& paddle)
 		ball.xVelocity *= -1;
 	}
 	// Rebote contra paddle
- // 3?? Rebote contra paddle (aquÌ agreg·s tu cÛdigo tal cual)
+ // 3Ô∏è‚É£ Rebote contra paddle (aqu√≠ agreg√°s tu c√≥digo tal cual)
 	if (CheckCollisionPaddle(ball, paddle))
 	{
 		// Solo rebote si la bola va hacia abajo
 		if (ball.yVelocity < 0)
 		{
 			ball.yVelocity *= -1;
-			// Ajustar la posiciÛn para que no se quede pegada
+			// Ajustar la posici√≥n para que no se quede pegada
 			ball.yPos = paddle.yPos - paddle.height / 2 - ball.radius;
 		}
-		ball.yPos = paddle.yPos + paddle.width;
+		ball.yPos = paddle.yPos + paddle.width/2;
 	}
 
 }
