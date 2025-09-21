@@ -1,6 +1,6 @@
 #pragma once
 #include "Paddle.h"
-
+#include "Bricks.h"
 struct Ball
 {
 	int xPos;
@@ -13,8 +13,9 @@ struct Ball
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed);
 void Launch(Ball& ball);
-void Update(Ball& ball, Paddle& paddle);
+void Update(Ball& ball, Paddle& paddle, Brick bricks[LINES_OF_BRICKS][BRICKS_PER_LINE]);
 void CheckScore(Ball& ball, Paddle& paddle);
 bool CheckCollisionPaddle(Ball& ball, Paddle& paddle);
 bool CheckCollisionWall(Ball& ball);
+void CheckLives(Ball& ball, Paddle& paddle);
 

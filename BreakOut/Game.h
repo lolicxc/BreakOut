@@ -5,7 +5,7 @@
 #include "Paddle.h"
 
 
-bool WinCondition(Paddle& paddle1, Paddle& paddle2, int maxScore);
 void GameLoop();
+
 
 

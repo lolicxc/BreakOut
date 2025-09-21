@@ -1,19 +1,25 @@
 #include "Game.h"
 #include "Draw.h"
+#include "Bricks.h"
+
+
 
 void GameLoop()
 {
-
+	srand(time(NULL));
 	bool pause = false;
 
 	Paddle paddle = CreatePaddle(640 / 2, 60, 150, 10, 800.0f);
 	Ball ball = CreateBall(640 / 2, 100, 5.0f, 5.0f, 15, 300.0f);
+	Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE];
+	InitBricks(brick);
+
 	Launch(ball);
 
 	const int maxScore = 10;
 
 	//gameloop
-	while (!slShouldClose())
+	while (!slShouldClose() && paddle.lives > 0)
 	{
 
 		if (slGetKey('P')) pause = !pause;
@@ -28,11 +34,14 @@ void GameLoop()
 				paddle = MoveLeft(paddle);
 			}
 
-			Update(ball, paddle);
+			Update(ball, paddle, brick);
 		}
 
+		DrawLives(paddle);
 		DrawPaddle(paddle);
 		DrawBall(ball);
+		DrawBricks(brick);
 		slRender();
 	}
 }
+

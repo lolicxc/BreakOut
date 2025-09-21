@@ -121,7 +121,8 @@
       <AdditionalDependencies>sigil.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)libs\sigil-vc2015-win64\*.dll" "$(OutDir)"/y</Command>
+      <Command>copy "$(SolutionDir)libs\sigil-vc2015-win64\*.dll" "$(OutDir)"/y 
+xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,11 +144,13 @@
       <AdditionalDependencies>sigil.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)libs\sigil-vc2015-win64\*.dll" "$(OutDir)"/y</Command>
+      <Command>copy "$(SolutionDir)libs\sigil-vc2015-win64\*.dll" "$(OutDir)"/y 
+xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Bricks.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -156,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Bricks.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainMenu.h" />

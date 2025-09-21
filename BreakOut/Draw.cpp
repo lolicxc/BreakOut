@@ -1,28 +1,54 @@
 #include "Draw.h"
 #include "sl.h"
+#include "MainMenu.h"
+#include <string>
+
 void DrawMainMenu()
 {
-    DrawButton(640 - 80, 350, 300, 50, "PVP", 5, 6);
-    DrawButton(640 - 80, 390, 300, 50, "CPU", 5, 6);
-    DrawButton(640, 460, 300, 50, "CREDITS", 5, 6);
-    DrawButton(640 + 20, 490, 300, 50, "EXIT", 5, 6);
+    float screenWidth = 640; 
+    float buttonWidth = 200;    
+    float buttonHeight = 50;
+    float x = screenWidth / 2; // centrado horizontal
+
+    float mouseX = slGetMouseX();
+    float mouseY = slGetMouseY();
+
+    DrawButton(x, 570, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 570, buttonWidth, buttonHeight));
+    DrawButton(x, 460, buttonWidth, buttonHeight, "CREDITS",IsInside(mouseX, mouseY, x, 460, buttonWidth, buttonHeight));
+    DrawButton(x, 350, buttonWidth, buttonHeight, "EXIT",IsInside(mouseX, mouseY, x, 350, buttonWidth, buttonHeight));
 }
 
-void DrawButton(float x, float y, float width, float height, const char* text, int buttonColor, int textColor)
+void DrawButton(float x, float y, float width, float height, const char* text, bool hover)
 {
-    slSetForeColor(buttonColor, buttonColor, buttonColor, 1.0); // color del botón
+    if (hover)
+    {
+        slSetForeColor(0.6f, 0.2f, 0.7f, 1.0f); 
+    }
+    else
+    {
+        slSetForeColor(0.44f, 0.0f, 0.39f, 1.0f); 
+    }
+
     slRectangleFill(x, y, width, height);
 
-    slSetForeColor(textColor, textColor, textColor, 1.0); // color del texto
-  /*  slText(x - slGetTextWidth(text) / 2, y - slGetTextHeight(text) / 2, text);*/
+ 
+    slSetForeColor(255, 255, 255, 1.0);
+    float textX = x - slGetTextWidth(text) / 2;
+    float textY = y - slGetTextHeight(text) / 2;
+    slText(textX, textY, text);
+ 
+
+ 
 }
-void DrawScore(Paddle& paddle)
+void DrawLives(Paddle& paddle)
 {
+    std::string liveText = "Lives: " + std::to_string(paddle.lives);
+    slText(0.0, 0.0, liveText.c_str());
 }
 
 void DrawBall(Ball ball)
 {
-	slCircleFill(ball.xPos, ball.yPos, ball.radius, 6);
+	slCircleFill(ball.xPos, ball.yPos, ball.radius, 12);
 }
 
 void DrawPaddle(Paddle paddle)
@@ -46,5 +72,26 @@ void DrawCredits()
 
 void DrawPause()
 {
+
+}
+
+void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
+{
+    
+    for (int i = 0; i < LINES_OF_BRICKS; i++)
+    {
+        for (int j = 0; j < BRICKS_PER_LINE; j++)
+        {
+
+            Brick& b = brick[i][j];
+
+            if (!b.active) continue; // <-- ignora ladrillos "destruidos"
+
+            float x = brick[i][j].xPos - brick[i][j].width / 2;
+            float y = brick[i][j].yPos - brick[i][j].height / 2;
+
+            slRectangleFill(x, y, brick[i][j].width, brick[i][j].height);
+        }
+    }
 
 }

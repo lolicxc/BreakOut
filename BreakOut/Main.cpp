@@ -12,7 +12,9 @@ int main()
 
 
     slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
-
+    int font = slLoadFont("../res/Baisteach.ttf");
+    slSetFont(font, 34);
+   
 
     bool exitGame = false;
 

@@ -4,42 +4,43 @@
 
 MAINMENU InputMainMenu()
 {
-
     // Obtener posición del mouse
     int mouseX = slGetMouseX();
     int mouseY = slGetMouseY();
 
-    int fontSize = 40;
-    float screenWidth = 640 / 2.2f;
+    float screenWidth = 640;
+    float buttonWidth = 200;
+    float buttonHeight = 50;
+    float x = screenWidth / 2; // centro en X
 
-    // Definimos rectángulos (x, y, ancho, alto)
-    int pvpX = screenWidth - 80, pvpY = 350, pvpW = 300, pvpH = 50;
-    int cpuX = screenWidth - 80, cpuY = 390, cpuW = 300, cpuH = 50;
-    int creditsX = screenWidth, creditsY = 460, creditsW = 300, creditsH = 50;
-    int exitX = screenWidth + 20, exitY = 490, exitW = 300, exitH = 50;
+    // Coordenadas centradas en Y
+    float playY = 570;
+    float creditsY = 460;
+    float exitY = 350;
 
     DrawMainMenu();
 
     // Detectar click
     if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
     {
-        // PVP
-        if (mouseX >= pvpX && mouseX <= pvpX + pvpW &&
-            mouseY >= pvpY && mouseY <= pvpY + pvpH)
+        if (IsInside(mouseX, mouseY, x, playY, buttonWidth, buttonHeight))
             return MAINMENU::PLAY;
 
-        // Credits
-        if (mouseX >= creditsX && mouseX <= creditsX + creditsW &&
-            mouseY >= creditsY && mouseY <= creditsY + creditsH)
+        if (IsInside(mouseX, mouseY, x, creditsY, buttonWidth, buttonHeight))
             return MAINMENU::CREDITS;
 
-        // Exit
-        if (mouseX >= exitX && mouseX <= exitX + exitW &&
-            mouseY >= exitY && mouseY <= exitY + exitH)
+        if (IsInside(mouseX, mouseY, x, exitY, buttonWidth, buttonHeight))
             return MAINMENU::EXIT;
     }
 
     return MAINMENU::NONE;
+}
+
+bool IsInside(float mouseX, float mouseY, float x, float y, float w, float h)
+{
+    return (mouseX >= x - w / 2 && mouseX <= x + w / 2 &&
+        mouseY >= y - h / 2 && mouseY <= y + h / 2);
+ 
 }
 
 void Credits()

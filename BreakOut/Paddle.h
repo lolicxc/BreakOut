@@ -9,7 +9,7 @@ struct Paddle
 	int width = 10;
 	int height = 10;
 	float speed = 5.0f;
-	int score = 0;
+	int lives = 3;
 };
 
 Paddle CreatePaddle(int xPos, int yPos, int width, int height, float speed);
