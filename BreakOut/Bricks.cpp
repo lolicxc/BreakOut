@@ -4,7 +4,7 @@
 
 void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
 {
-    int initialDownPosition = 600; 
+    int initialDownPosition = 700; 
     int spacingX = 5; 
     int spacingY = 5; 
 
@@ -13,7 +13,7 @@ void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
         for (int j = 0; j < BRICKS_PER_LINE; j++)
         {
             brick[i][j].width = 50;
-            brick[i][j].height = 25;
+            brick[i][j].height = 35;
 
  
             brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 50; 

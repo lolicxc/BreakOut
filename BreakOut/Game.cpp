@@ -17,6 +17,8 @@ void GameLoop()
 	brickTextures[1] = slLoadTexture("../res/rune2.png");
 	brickTextures[2] = slLoadTexture("../res/rune3.png");
 
+	int backgroundGame = slLoadTexture("../res/Background1.png");
+
 	Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE];
 	InitBricks(brick);
 
@@ -42,7 +44,7 @@ void GameLoop()
 
 			Update(ball, paddle, brick);
 		}
-
+		slSprite(backgroundGame, 640 / 2, 720 / 2, 640, 720);
 		DrawLives(paddle);
 		DrawPaddle(paddle);
 		DrawBall(ball);

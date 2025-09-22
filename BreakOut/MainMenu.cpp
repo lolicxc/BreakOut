@@ -14,9 +14,9 @@ MAINMENU InputMainMenu()
     float x = screenWidth / 2; // centro en X
 
     // Coordenadas centradas en Y
-    float playY = 570;
-    float creditsY = 460;
-    float exitY = 350;
+    float playY = 400;
+    float creditsY = 300;
+    float exitY = 200;
 
     // Detectar click
     if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))

@@ -7,20 +7,22 @@ void DrawMainMenu()
 {
     float screenWidth = 640; 
     float buttonWidth = 200;    
-    float buttonHeight = 50;
+    float buttonHeight = 80;
     float x = screenWidth / 2; // centrado horizontal
 
     float mouseX = slGetMouseX();
     float mouseY = slGetMouseY();
 
-    DrawButton(x, 570, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 570, buttonWidth, buttonHeight));
-    DrawButton(x, 460, buttonWidth, buttonHeight, "CREDITS",IsInside(mouseX, mouseY, x, 460, buttonWidth, buttonHeight));
-    DrawButton(x, 350, buttonWidth, buttonHeight, "EXIT",IsInside(mouseX, mouseY, x, 350, buttonWidth, buttonHeight));
+    DrawButton(x, 400, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 400, buttonWidth, buttonHeight));
+    DrawButton(x, 300, buttonWidth, buttonHeight, "CREDITS",IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
+    DrawButton(x, 200, buttonWidth, buttonHeight, "EXIT",IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
 
 }
 
 void DrawButton(float x, float y, float width, float height, const char* text, bool hover)
 {
+    int button = slLoadTexture("../res/button.png");
+
     if (hover)
     {
         slSetForeColor(0.6f, 0.2f, 0.7f, 1.0f); 
@@ -30,10 +32,9 @@ void DrawButton(float x, float y, float width, float height, const char* text, b
         slSetForeColor(0.44f, 0.0f, 0.39f, 1.0f); 
     }
 
-    slRectangleFill(x, y, width, height);
 
- 
-    slSetForeColor(255, 255, 255, 1.0);
+    slSprite(button, x, y, width, height);
+    slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
     float textX = x - slGetTextWidth(text) / 2;
     float textY = y - slGetTextHeight(text) / 2;
     slText(textX, textY, text);
@@ -44,7 +45,7 @@ void DrawButton(float x, float y, float width, float height, const char* text, b
 void DrawLives(Paddle& paddle)
 {
     std::string liveText = "Lives: " + std::to_string(paddle.lives);
-    slText(0.0, 0.0, liveText.c_str());
+    slText(4.0, 10.0, liveText.c_str());
 }
 
 void DrawBall(Ball ball)
