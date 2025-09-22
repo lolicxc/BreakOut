@@ -13,4 +13,4 @@ void DrawWinner(Paddle& paddle1, Paddle& paddle2);
 void DrawField();
 void DrawCredits();
 void DrawPause();
-void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE]);
+void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE], int brickTextures[3]);

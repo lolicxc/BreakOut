@@ -10,19 +10,23 @@ int main()
     const int screenWidth = 640;
     const int screenHeight = 720;
 
+    //fondo
 
     slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
+
+    int background = slLoadTexture("../res/Background.PNG");
+
     int font = slLoadFont("../res/Baisteach.ttf");
-    slSetFont(font, 34);
-   
+    slSetFont(font, 34);   
 
     bool exitGame = false;
 
     while (!slShouldClose()&& !exitGame)
     {
+        
+        slSprite(background, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
         DrawMainMenu();
-        slRender();
-
+ 
         MAINMENU option = InputMainMenu();
 
         switch (option)

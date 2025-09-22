@@ -16,6 +16,7 @@ void DrawMainMenu()
     DrawButton(x, 570, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 570, buttonWidth, buttonHeight));
     DrawButton(x, 460, buttonWidth, buttonHeight, "CREDITS",IsInside(mouseX, mouseY, x, 460, buttonWidth, buttonHeight));
     DrawButton(x, 350, buttonWidth, buttonHeight, "EXIT",IsInside(mouseX, mouseY, x, 350, buttonWidth, buttonHeight));
+
 }
 
 void DrawButton(float x, float y, float width, float height, const char* text, bool hover)
@@ -75,7 +76,7 @@ void DrawPause()
 
 }
 
-void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
+void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE], int brickTextures[3])
 {
     
     for (int i = 0; i < LINES_OF_BRICKS; i++)
@@ -90,7 +91,7 @@ void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
             float x = brick[i][j].xPos - brick[i][j].width / 2;
             float y = brick[i][j].yPos - brick[i][j].height / 2;
 
-            slRectangleFill(x, y, brick[i][j].width, brick[i][j].height);
+            slSprite(brickTextures[b.texture], x, y, b.width, b.height);
         }
     }
 

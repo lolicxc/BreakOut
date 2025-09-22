@@ -18,8 +18,6 @@ MAINMENU InputMainMenu()
     float creditsY = 460;
     float exitY = 350;
 
-    DrawMainMenu();
-
     // Detectar click
     if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
     {
@@ -54,8 +52,8 @@ void Credits()
 			exitCredits = true;
 		}
 
-		slRender();
 		DrawCredits();
+		slRender();
 
 	}
 

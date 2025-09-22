@@ -20,6 +20,8 @@ void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
             brick[i][j].yPos = initialDownPosition - i * (brick[i][j].height + spacingY) - brick[i][j].height / 2;
 
             brick[i][j].active = true;
+
+            brick[i][j].texture = rand() % 3; 
         }
     }
 }

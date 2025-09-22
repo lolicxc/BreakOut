@@ -9,6 +9,7 @@ struct Brick
     float width;   
     float height;
     bool active;
+    int texture;
 };
 
 const int LINES_OF_BRICKS = 5;
