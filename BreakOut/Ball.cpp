@@ -16,6 +16,7 @@ Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius
 
 void Launch(Ball& ball)
 {
+
 	// Elegir dirección aleatoria X y Y
 	int dirX = (std::rand() % 2 == 0) ? -1 : 1;
 	int dirY = (std::rand() % 2 == 0) ? -1 : 1;
@@ -33,27 +34,30 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[LINES_OF_BRICKS][BRICKS_PER_
 	ball.xPos += ball.xVelocity * deltaTime;
 	ball.yPos += ball.yVelocity * deltaTime;
 
-
 	if (CheckCollisionWall(ball))
 	{
 		ball.xVelocity *= -1;
 	}
+
 	// Rebote contra paddle
 	if (CheckCollisionPaddle(ball, paddle))
 	{
+		// invertir dirección vertical (rebote hacia arriba)
+		ball.yVelocity *= -1;
 
-		if (ball.yVelocity < 0)
-		{
-			ball.yVelocity *= -1;
-	
-			ball.yPos = paddle.yPos - paddle.height / 2 - ball.radius;
-		}
-		ball.yPos = paddle.yPos + paddle.width/2;
+		// recolocar justo arriba del paddle
+		ball.yPos = paddle.yPos + paddle.height / 2 + ball.radius;
+
+		//// variar la dirección horizontal según dónde pega
+		float hitPos = (ball.xPos - paddle.xPos) / (paddle.width / 2.0f);
+		ball.xVelocity += hitPos * 300.0f; // factor ajustable
 	}
 
 	BricksCollision(ball, brick);
 	CheckLives(ball, paddle);
 }
+
+
 
 
 void CheckScore(Ball& ball, Paddle& paddle1)
@@ -76,6 +80,7 @@ bool CheckCollisionPaddle(Ball& ball, Paddle& paddle)
 		ballLeft <= paddleRight &&
 		ballBottom >= paddleTop &&
 		ballTop <= paddleBottom);
+
 }
 
 bool CheckCollisionWall(Ball& ball)

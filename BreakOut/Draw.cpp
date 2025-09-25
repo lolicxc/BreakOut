@@ -5,8 +5,7 @@
 
 void DrawMainMenu()
 {
-    float screenWidth = 640; 
-    float buttonWidth = 200;    
+    float buttonWidth = 200;
     float buttonHeight = 80;
     float x = screenWidth / 2; // centrado horizontal
 
@@ -14,8 +13,8 @@ void DrawMainMenu()
     float mouseY = slGetMouseY();
 
     DrawButton(x, 400, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 400, buttonWidth, buttonHeight));
-    DrawButton(x, 300, buttonWidth, buttonHeight, "CREDITS",IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
-    DrawButton(x, 200, buttonWidth, buttonHeight, "EXIT",IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
+    DrawButton(x, 300, buttonWidth, buttonHeight, "Credits",IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
+    DrawButton(x, 200, buttonWidth, buttonHeight, "Exit",IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
 
 }
 
@@ -29,7 +28,7 @@ void DrawButton(float x, float y, float width, float height, const char* text, b
     }
     else
     {
-        slSetForeColor(0.44f, 0.0f, 0.39f, 1.0f); 
+        slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
 
@@ -39,18 +38,27 @@ void DrawButton(float x, float y, float width, float height, const char* text, b
     float textY = y - slGetTextHeight(text) / 2;
     slText(textX, textY, text);
  
-
- 
 }
+
 void DrawLives(Paddle& paddle)
 {
+    slSetForeColor(1.0f, 0.0f, 0.0f, 1.0f);
     std::string liveText = "Lives: " + std::to_string(paddle.lives);
-    slText(4.0, 10.0, liveText.c_str());
+    slText(45.0, screenHeight - 55, liveText.c_str());
+    slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void DrawBall(Ball ball)
+void DrawBall(Ball& ball)
 {
-	slCircleFill(ball.xPos, ball.yPos, ball.radius, 12);
+    int spriteToDraw = ball.hitBrick ? ball.hitBallS : ball.normalBallS;
+
+    slSprite(spriteToDraw, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
+
+    // opcional: resetear para que solo dure 1 frame
+
+    ///*slCircleFill(ball.xPos, ball.yPos, ball.radius, 12);*/
+    //slSprite(ballAsset, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
+    ball.hitBrick = false;
 }
 
 void DrawPaddle(Paddle paddle)
@@ -87,7 +95,7 @@ void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE], int brickTextures
 
             Brick& b = brick[i][j];
 
-            if (!b.active) continue; // <-- ignora ladrillos "destruidos"
+            if (!b.active) continue; 
 
             float x = brick[i][j].xPos - brick[i][j].width / 2;
             float y = brick[i][j].yPos - brick[i][j].height / 2;

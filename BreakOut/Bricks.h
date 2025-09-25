@@ -13,7 +13,7 @@ struct Brick
 };
 
 const int LINES_OF_BRICKS = 5;
-const int  BRICKS_PER_LINE = 11;
+const int  BRICKS_PER_LINE = 9;
 
 void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE]);
 void BricksCollision(Ball& ball, Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE]);

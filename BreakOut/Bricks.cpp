@@ -4,19 +4,19 @@
 
 void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
 {
-    int initialDownPosition = 700; 
-    int spacingX = 5; 
+    int initialDownPosition = 650; 
+    int spacingX = 3; 
     int spacingY = 5; 
 
     for (int i = 0; i < LINES_OF_BRICKS; i++)
     {
         for (int j = 0; j < BRICKS_PER_LINE; j++)
         {
-            brick[i][j].width = 50;
-            brick[i][j].height = 35;
+            brick[i][j].width = 60;
+            brick[i][j].height = 30;
 
  
-            brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 50; 
+            brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 65; 
             brick[i][j].yPos = initialDownPosition - i * (brick[i][j].height + spacingY) - brick[i][j].height / 2;
 
             brick[i][j].active = true;
@@ -43,7 +43,7 @@ void BricksCollision(Ball& ball, Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
                 ball.yPos - ball.radius <= b.yPos + b.height / 2)
             {
                 b.active = false;
-
+                ball.hitBrick = true;
         
                 float overlapX = (b.width / 2 + ball.radius) - fabs(ball.xPos - b.xPos);
                 float overlapY = (b.height / 2 + ball.radius) - fabs(ball.yPos - b.yPos);
@@ -52,6 +52,7 @@ void BricksCollision(Ball& ball, Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
                     ball.xVelocity *= -1; 
                 else
                     ball.yVelocity *= -1; 
+
             }
         }
     }

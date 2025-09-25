@@ -9,6 +9,9 @@ struct Ball
 	float xVelocity;
 	float yVelocity;
 	float speed;
+	bool hitBrick;
+	int normalBallS;
+	int hitBallS;
 };
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed);

@@ -18,9 +18,12 @@ void GameLoop()
 	brickTextures[2] = slLoadTexture("../res/rune3.png");
 
 	int backgroundGame = slLoadTexture("../res/Background1.png");
+	ball.normalBallS = slLoadTexture("../res/ball.png");
+	ball.hitBallS = slLoadTexture("../res/ball2.png");
 
 	Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE];
 	InitBricks(brick);
+
 
 	Launch(ball);
 

@@ -7,8 +7,6 @@ int main()
 {
     srand(time(NULL));
 
-    const int screenWidth = 640;
-    const int screenHeight = 720;
 
     //fondo
 
@@ -16,7 +14,7 @@ int main()
 
     int background = slLoadTexture("../res/Background.PNG");
 
-    int font = slLoadFont("../res/Baisteach.ttf");
+    int font = slLoadFont("../res/LEGO.ttf");
     slSetFont(font, 34);   
 
     bool exitGame = false;
