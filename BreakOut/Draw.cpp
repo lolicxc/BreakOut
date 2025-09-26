@@ -44,7 +44,7 @@ void DrawLives(Paddle& paddle)
 {
     slSetForeColor(1.0f, 0.0f, 0.0f, 1.0f);
     std::string liveText = "Lives: " + std::to_string(paddle.lives);
-    slText(45.0, screenHeight - 55, liveText.c_str());
+    slText(45, screenHeight - 55, liveText.c_str());
     slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -53,8 +53,6 @@ void DrawBall(Ball& ball)
 
     int spriteToDraw = ball.hitBrick ? ball.hitBallS : ball.normalBallS;
     slSprite(spriteToDraw, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
-
-    // opcional: resetear para que solo dure 1 frame
 
     ///*slCircleFill(ball.xPos, ball.yPos, ball.radius, 12);*/
     //slSprite(ballAsset, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
@@ -71,19 +69,21 @@ void DrawWinner(Paddle& paddle1, Paddle& paddle2)
 {
 }
 
-void DrawField()
-{
-}
 
 void DrawCredits()
 {
     int credits = slLoadTexture("../res/credits.png");
     slSprite(credits, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+    slText(120, 180, "(Press 'Z' to back main menu)");
 }
 
 void DrawPause()
 {
-
+    slSetFontSize(25);
+    slSetForeColor(1.0f, 0.0f, 0.0f, 1.0f);
+    slText(460, screenHeight - 55, "'P' to pause");
+    slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
+    slSetFontSize(30);
 }
 
 void DrawBricks(Brick brick[brickRow][brickCol], int brickTextures[3])

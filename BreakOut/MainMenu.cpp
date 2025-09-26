@@ -1,10 +1,46 @@
 #include "MainMenu.h"
 #include "Draw.h"
+#include "Game.h"
 
+
+void InitMainMenu()
+{
+	int background = slLoadTexture("../res/Background.PNG");
+
+	int font = slLoadFont("../res/LEGO.ttf");
+	slSetFont(font, 34);
+	bool exitGame = false;
+
+	while (!slShouldClose() && !exitGame)
+	{
+		slSprite(background, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+		DrawMainMenu();
+
+		MAINMENU option = InputMainMenu();
+
+		switch (option)
+		{
+
+		case MAINMENU::PLAY:
+			GameLoop();
+			break;
+		case MAINMENU::CREDITS:
+			Credits();
+			break;
+		case MAINMENU::EXIT:
+			exitGame = true;
+			break;
+		default:
+			break;
+		}
+
+		slRender();
+	}
+}
 
 MAINMENU InputMainMenu()
 {
-    // Obtener posición del mouse
+    
     int mouseX = slGetMouseX();
     int mouseY = slGetMouseY();
 
@@ -13,12 +49,11 @@ MAINMENU InputMainMenu()
     float buttonHeight = 50;
     float x = screenWidth / 2; // centro en X
 
-    // Coordenadas centradas en Y
     float playY = 400;
     float creditsY = 300;
     float exitY = 200;
 
-    // Detectar click
+    // detectar click
     if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
     {
         if (IsInside(mouseX, mouseY, x, playY, buttonWidth, buttonHeight))
@@ -54,7 +89,6 @@ void Credits()
 
 		DrawCredits();
 		slRender();
-
 	}
 
 }

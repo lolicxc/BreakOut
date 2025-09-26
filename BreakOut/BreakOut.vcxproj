@@ -156,6 +156,7 @@ xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="RunGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
@@ -164,6 +165,7 @@ xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="RunGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

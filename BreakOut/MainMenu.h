@@ -1,5 +1,4 @@
 #pragma once
-
 #include "sl.h"
 
 enum class MAINMENU
@@ -11,6 +10,7 @@ enum class MAINMENU
 
 };
 
+void InitMainMenu();
 MAINMENU InputMainMenu();
 bool IsInside(float mouseX, float mouseY, float x, float y, float w, float h);
 void Credits();

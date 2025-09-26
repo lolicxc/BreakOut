@@ -18,14 +18,11 @@ Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius
 void Launch(Ball& ball)
 {
 
-	// Elegir dirección aleatoria X y Y
-	int dirX = (std::rand() % 2 == 0) ? -1 : 1;
-	int dirY = (std::rand() % 2 == 0) ? -1 : 1;
+	int dirX = (rand() % 2 == 0) ? -1 : 1;
+	int dirY = (rand() % 2 == 0) ? -1 : 1;
 
 	ball.xVelocity = dirX * ball.speed;
-	ball.yVelocity = dirY * ball.speed;
-	//ball.xVelocity = ball.speed;    
-	//ball.yVelocity = -ball.speed;    
+	ball.yVelocity = dirY * ball.speed;   
 }
 
 void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
