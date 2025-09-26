@@ -12,11 +12,12 @@ struct Ball
 	bool hitBrick;
 	int normalBallS;
 	int hitBallS;
+	bool isLaunched;
 };
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed);
 void Launch(Ball& ball);
-void Update(Ball& ball, Paddle& paddle, Brick bricks[LINES_OF_BRICKS][BRICKS_PER_LINE]);
+void Update(Ball& ball, Paddle& paddle, Brick bricks[brickRow][brickCol]);
 void CheckScore(Ball& ball, Paddle& paddle);
 bool CheckCollisionPaddle(Ball& ball, Paddle& paddle);
 bool CheckCollisionWall(Ball& ball);

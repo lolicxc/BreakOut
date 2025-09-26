@@ -10,10 +10,11 @@ struct Brick
     float height;
     bool active;
     int texture;
+
 };
 
-const int LINES_OF_BRICKS = 5;
-const int  BRICKS_PER_LINE = 9;
+const int brickRow = 5;
+const int  brickCol = 9;
 
-void InitBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE]);
-void BricksCollision(Ball& ball, Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE]);
+void InitBricks(Brick brick[brickRow][brickCol]);
+void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol]);

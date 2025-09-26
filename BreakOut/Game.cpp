@@ -7,10 +7,10 @@
 void GameLoop()
 {
 	srand(time(NULL));
-	bool pause = false;
 
-	Paddle paddle = CreatePaddle(640 / 2, 60, 150, 10, 800.0f);
+	Paddle paddle = CreatePaddle(640 / 2, 60, 75, 35, 800.0f);
 	Ball ball = CreateBall(640 / 2, 100, 5.0f, 5.0f, 15, 300.0f);
+	ball.isLaunched = false;
 
 	int brickTextures[3];
 	brickTextures[0] = slLoadTexture("../res/rune1.png");
@@ -20,20 +20,30 @@ void GameLoop()
 	int backgroundGame = slLoadTexture("../res/Background1.png");
 	ball.normalBallS = slLoadTexture("../res/ball.png");
 	ball.hitBallS = slLoadTexture("../res/ball2.png");
+	int paddleAsset = slLoadTexture("../res/paddle.png");
 
-	Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE];
+	Brick brick[brickRow][brickCol];
 	InitBricks(brick);
 
-
-	Launch(ball);
-
 	const int maxScore = 10;
+
+	bool pause = false;
+	bool pWasPressed = false;
 
 	//gameloop
 	while (!slShouldClose() && paddle.lives > 0)
 	{
 
-		if (slGetKey('P')) pause = !pause;
+		// dentro del loop
+		if (slGetKey('P')) {
+			if (!pWasPressed) {   // solo entra cuando recién se presiona
+				pause = !pause;
+				pWasPressed = true;
+			}
+		}
+		else {
+			pWasPressed = false;  // se suelta la tecla, listo para la próxima
+		}
 		if (!pause)
 		{
 			if (slGetKey(SL_KEY_RIGHT))
@@ -47,12 +57,17 @@ void GameLoop()
 
 			Update(ball, paddle, brick);
 		}
-		slSprite(backgroundGame, 640 / 2, 720 / 2, 640, 720);
+		slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
 		DrawLives(paddle);
-		DrawPaddle(paddle);
+		DrawPaddle(paddle, paddleAsset);
 		DrawBall(ball);
 		DrawBricks(brick, brickTextures);
+		if (!ball.isLaunched)
+		{
+			slText(170, 360, "Press 'L' to launch ball");
+		}
 		slRender();
+
 	}
 }
 

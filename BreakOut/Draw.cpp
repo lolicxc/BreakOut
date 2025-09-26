@@ -50,8 +50,8 @@ void DrawLives(Paddle& paddle)
 
 void DrawBall(Ball& ball)
 {
-    int spriteToDraw = ball.hitBrick ? ball.hitBallS : ball.normalBallS;
 
+    int spriteToDraw = ball.hitBrick ? ball.hitBallS : ball.normalBallS;
     slSprite(spriteToDraw, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
 
     // opcional: resetear para que solo dure 1 frame
@@ -61,9 +61,10 @@ void DrawBall(Ball& ball)
     ball.hitBrick = false;
 }
 
-void DrawPaddle(Paddle paddle)
+void DrawPaddle(Paddle paddle, int paddleAsset)
 {
-	slRectangleFill(paddle.xPos, paddle.yPos, paddle.width, paddle.height);
+	/*slRectangleFill(paddle.xPos, paddle.yPos, paddle.width, paddle.height);*/
+    slSprite(paddleAsset, paddle.xPos, paddle.yPos, paddle.width, paddle.height);
 }
 
 void DrawWinner(Paddle& paddle1, Paddle& paddle2)
@@ -76,8 +77,8 @@ void DrawField()
 
 void DrawCredits()
 {
-
-
+    int credits = slLoadTexture("../res/credits.png");
+    slSprite(credits, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
 }
 
 void DrawPause()
@@ -85,12 +86,12 @@ void DrawPause()
 
 }
 
-void DrawBricks(Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE], int brickTextures[3])
+void DrawBricks(Brick brick[brickRow][brickCol], int brickTextures[3])
 {
     
-    for (int i = 0; i < LINES_OF_BRICKS; i++)
+    for (int i = 0; i < brickRow; i++)
     {
-        for (int j = 0; j < BRICKS_PER_LINE; j++)
+        for (int j = 0; j < brickCol; j++)
         {
 
             Brick& b = brick[i][j];

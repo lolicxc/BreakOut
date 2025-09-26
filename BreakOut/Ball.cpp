@@ -1,5 +1,6 @@
 ﻿#include "Ball.h"
 #include "sl.h"
+#include "Draw.h"
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed)
 {
@@ -27,34 +28,47 @@ void Launch(Ball& ball)
 	//ball.yVelocity = -ball.speed;    
 }
 
-void Update(Ball& ball, Paddle& paddle, Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE])
+void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 {
 	float deltaTime = slGetDeltaTime();
 
-	ball.xPos += ball.xVelocity * deltaTime;
-	ball.yPos += ball.yVelocity * deltaTime;
-
-	if (CheckCollisionWall(ball))
+	if (!ball.isLaunched)
 	{
-		ball.xVelocity *= -1;
-	}
-
-	// Rebote contra paddle
-	if (CheckCollisionPaddle(ball, paddle))
-	{
-		// invertir dirección vertical (rebote hacia arriba)
-		ball.yVelocity *= -1;
-
-		// recolocar justo arriba del paddle
+		ball.xPos = paddle.xPos;
 		ball.yPos = paddle.yPos + paddle.height / 2 + ball.radius;
 
-		//// variar la dirección horizontal según dónde pega
-		float hitPos = (ball.xPos - paddle.xPos) / (paddle.width / 2.0f);
-		ball.xVelocity += hitPos * 300.0f; // factor ajustable
+		if (slGetKey('L'))
+		{
+			Launch(ball);
+			ball.isLaunched = true;
+		}
 	}
+	else
+	{
 
-	BricksCollision(ball, brick);
-	CheckLives(ball, paddle);
+		ball.xPos += ball.xVelocity * deltaTime;
+		ball.yPos += ball.yVelocity * deltaTime;
+
+		if (CheckCollisionWall(ball))
+		{
+			ball.xVelocity *= -1;
+		}
+
+		// rebote contra paddle
+		if (CheckCollisionPaddle(ball, paddle))
+		{
+			ball.yVelocity *= -1;
+
+
+			ball.yPos = paddle.yPos + paddle.height / 2 + ball.radius;
+
+			float hitPos = (ball.xPos - paddle.xPos) / (paddle.width / 2.0f);
+			ball.xVelocity += hitPos * 300.0f;
+		}
+
+		BricksCollision(ball, brick);
+		CheckLives(ball, paddle);
+	}
 }
 
 
@@ -85,15 +99,16 @@ bool CheckCollisionPaddle(Ball& ball, Paddle& paddle)
 
 bool CheckCollisionWall(Ball& ball)
 {
-	if (ball.yPos + ball.radius >= 720)
+	if (ball.yPos + ball.radius >= screenHeight)
 	{
-		ball.yPos = 720 - ball.radius;
+		ball.yPos = screenHeight - ball.radius;
 		ball.yVelocity *= -1;
+		ball.xVelocity *= -1;
 		return true;
 	}
-	else if (ball.xPos + ball.radius >= 640)
+	else if (ball.xPos + ball.radius >= screenWidth)
 	{
-		ball.xPos = 640 - ball.radius;
+		ball.xPos = screenWidth - ball.radius;
 		return true;
 	}
 	else if (ball.xPos - ball.radius <= 0)
@@ -109,14 +124,18 @@ void CheckLives(Ball& ball, Paddle& paddle)
 	const float screenWidth = 640;
 	const float screenHeight = 720;
 
-	if (ball.yPos - ball.radius <= 0) // "se pasó de la pantalla"
+	if (ball.yPos - ball.radius <= 0)
 	{
 		paddle.lives--;
 
-		// Reiniciar posición al centro
-		ball.xPos = screenWidth / 2;
-		ball.yPos = screenHeight / 2;
+		//reset pos
+		ball.xPos = paddle.xPos;
+		ball.yPos = paddle.yPos + paddle.height / 2 + ball.radius;
 
+		ball.xVelocity = 0;
+		ball.yVelocity = 0;
+
+		ball.isLaunched = false;
 		Launch(ball);
 	}
 }
