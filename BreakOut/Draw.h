@@ -2,7 +2,7 @@
 
 #include "Ball.h"
 #include "Bricks.h"
-
+#include "PowerUps.h"
 
 const int screenWidth = 640;
 const int screenHeight = 720;
@@ -19,3 +19,4 @@ void DrawPause();
 void DrawBricks(Brick brick[brickRow][brickCol]);
 void DrawPauseScreen();
 void DrawWinScreen();
+void DrawPowerUps();

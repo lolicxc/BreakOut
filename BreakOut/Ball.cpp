@@ -1,6 +1,10 @@
 ﻿#include "Ball.h"
 #include "sl.h"
 #include "Draw.h"
+#include "Paddle.h"
+
+Ball balls[maxBalls];
+int ballCount = 1;
 
 Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius, float speed)
 {
@@ -15,6 +19,14 @@ Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius
 	return ball;
 }
 
+void InitBalls()
+{
+	ballCount = 1;
+	balls[0] = CreateBall(320, 100, 5.0f, 5.0f, 12, 300.0f);
+	balls[0].isLaunched = false;
+	balls[0].isActive = true;
+}
+
 void Launch(Ball& ball)
 {
 
@@ -22,9 +34,40 @@ void Launch(Ball& ball)
 	int dirY = (rand() % 2 == 0) ? -1 : 1;
 
 	ball.xVelocity = dirX * ball.speed;
-	ball.yVelocity = dirY * ball.speed;   
+	ball.yVelocity = dirY * ball.speed;
 }
 
+void UpdateBalls(Paddle& paddle, Brick bricks[brickRow][brickCol])
+{
+	for (int i = 0; i < ballCount; i++)
+	{
+		if (balls[i].isActive)
+			Update(balls[i], paddle, bricks);
+	}
+
+	bool anyActive = false;
+	for (int i = 0; i < ballCount; i++)
+	{
+		if (balls[i].isActive)
+		{
+			anyActive = true;
+			break;
+		}
+	}
+
+	if (!anyActive)
+	{
+		CheckLives(paddle);
+	}
+}
+void DrawBalls()
+{
+	for (int i = 0; i < ballCount; i++)
+	{
+		DrawBall(balls[i]);
+	}
+
+}
 void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 {
 	float deltaTime = slGetDeltaTime();
@@ -46,11 +89,8 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 		ball.xPos += ball.xVelocity * deltaTime;
 		ball.yPos += ball.yVelocity * deltaTime;
 
-		if (CheckCollisionWall(ball))
-		{
-			ball.xVelocity *= -1;
-			
-		}
+		CheckCollisionWall(ball);
+
 
 		// rebote contra paddle
 		if (CheckCollisionPaddle(ball, paddle))
@@ -65,7 +105,13 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 		}
 
 		BricksCollision(ball, brick);
-		CheckLives(ball, paddle);
+
+		if (ball.yPos + ball.radius < 0)
+		{
+			ball.isActive = false;  // la pelota ya no está activa
+			ball.isLaunched = false; // por las dudas, para que se reinicie después
+			return;                 // dejamos de actualizar
+		}
 	}
 }
 
@@ -97,41 +143,41 @@ bool CheckCollisionPaddle(Ball& ball, Paddle& paddle)
 
 bool CheckCollisionWall(Ball& ball)
 {
-	if (ball.yPos + ball.radius >= screenHeight)
+	if (ball.yPos + ball.radius >= screenHeight)   // techo
 	{
 		ball.yPos = screenHeight - ball.radius;
 		ball.yVelocity *= -1;
 		return true;
 	}
-	else if (ball.xPos + ball.radius >= screenWidth)
+	else if (ball.xPos + ball.radius >= screenWidth)  // derecha
 	{
 		ball.xPos = screenWidth - ball.radius;
-
+		ball.xVelocity *= -1;
 		return true;
 	}
-	else if (ball.xPos - ball.radius <= 0)
+	else if (ball.xPos - ball.radius <= 0)            // izquierda
 	{
 		ball.xPos = ball.radius;
+		ball.xVelocity *= -1;
+
+		// ⚡ evitar que quede con velocidad horizontal muy baja
+		if (fabs(ball.xVelocity) < 100.0f)
+		{
+			ball.xVelocity = (ball.xVelocity < 0 ? -1 : 1) * 100.0f;
+		}
+
 		return true;
 	}
 	return false;
 }
 
-void CheckLives(Ball& ball, Paddle& paddle)
+void CheckLives(Paddle& paddle)
 {
-	
-	if (ball.yPos - ball.radius <= 0)
-	{
-		paddle.lives--;
 
-		//reset pos
-		ball.xPos = paddle.xPos;
-		ball.yPos = paddle.yPos + paddle.height / 2 + ball.radius;
+	paddle.lives--;
 
-		ball.xVelocity = 0;
-		ball.yVelocity = 0;
-
-		ball.isLaunched = false;
-		Launch(ball);
-	}
+	// Reinicia una sola pelota en el paddle
+	ballCount = 1;
+	balls[0] = CreateBall(paddle.xPos, paddle.yPos + paddle.height / 2 + 12, 5.0f, 5.0f, 12, 300.0f);
+	balls[0].isLaunched = false;
 }

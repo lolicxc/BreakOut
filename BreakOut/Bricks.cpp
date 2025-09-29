@@ -1,6 +1,7 @@
 #pragma once
 #include "Bricks.h"
 #include "Ball.h"
+#include "PowerUps.h"
 
 void InitBricks(Brick brick[brickRow][brickCol])
 {
@@ -89,6 +90,22 @@ void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol])
 				}
 
 				b.active = false;
+
+				if (rand() % 100 < 30) // 30% chance
+				{
+					for (int k = 0; k < maxPowerUps; k++)
+					{
+						if (!powerUps[k].active)
+						{
+							powerUps[k].type = (POWERUPTYPE)(rand() % 4);
+							powerUps[k].xPos = b.xPos;
+							powerUps[k].yPos = b.yPos;
+							powerUps[k].speedY = 150.0f;
+							powerUps[k].active = true;
+							break;
+						}
+					}
+				}
 				return;
 			}
 		}

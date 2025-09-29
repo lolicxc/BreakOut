@@ -4,6 +4,9 @@
 #include "MainMenu.h"
 #include "PauseScreen.h"
 #include "Assets.h"
+#include "GameState.h"
+#include "PowerUps.h"
+
 void InitGame()
 {
 	srand(time(NULL));
@@ -19,9 +22,6 @@ void GameLoop()
 	srand(time(NULL));
 
 	Paddle paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
-	Ball ball = CreateBall(640 / 2, 100, 5.0f, 5.0f, 12, 300.0f);
-	ball.isLaunched = false;
-
 	Brick brick[brickRow][brickCol];
 	InitBricks(brick);
 
@@ -30,100 +30,122 @@ void GameLoop()
 	bool pause = false;
 	bool pWasPressed = false;
 	bool exitGamePlay = false;
-	//gameloop
-	while (!slShouldClose() && !exitGamePlay && paddle.lives > 0)
-	{
 
-		// dentro del loop
-		if (slGetKey('P'))
-		{
-			if (!pWasPressed)
-			{   // solo entra cuando recien se presiona
-				pause = !pause;
-				pWasPressed = true;
-			}
-		}
-		else
-		{
-			pWasPressed = false;
-		}
-		if (!pause)
-		{
-			if (slGetKey(SL_KEY_RIGHT))
-			{
-				paddle = MoveRight(paddle);
-			}
-			if (slGetKey(SL_KEY_LEFT))
-			{
-				paddle = MoveLeft(paddle);
-			}
+	GAMESTATE currentState = GAMESTATE::MAINMENU;
+    while (!slShouldClose() && !exitGamePlay)
+    {
+        switch (currentState)
+        {
+        case GAMESTATE::MAINMENU:
+        {
+            
+            MAINMENU option = InputMainMenu();
+            if (option == MAINMENU::PLAY)
+            {
+     
+                paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
+                InitBalls();
+                InitBricks(brick);
+                currentState = GAMESTATE::PLAYING;
+            }
+            else if (option == MAINMENU::EXIT)
+            {
+                exitGamePlay = true;
+            }
+            // Aquí podrías manejar otros estados como CREDITS si quieres
+            break;
+        }
 
-			Update(ball, paddle, brick);
-		}
-		slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
-		DrawPause();
-		DrawLives(paddle);
-		DrawPaddle(paddle);
-		DrawBall(ball);
-		DrawBricks(brick);
-		if (!ball.isLaunched)
-		{
-			slText(170, 360, "Press 'L' to launch ball");
-		}
-		if (pause)
-		{
+        case GAMESTATE::PLAYING:
+        {
 
-			DrawPauseScreen();
-			// Input solo cuando el juego esta en pausa
-			PAUSE option = InputPauseScreen();
-			switch (option)
-			{
-			case PAUSE::RESUME:
-				pause = false;
-				break;
-			case PAUSE::EXIT:
-				exitGamePlay = true; // Volver al menu
-				break;
-			default:
-				break;
-			}
-		}
-		//if (WinCondition(brick))
-		//{
+            // Control pausa
+            if (slGetKey('P'))
+            {
+                if (!pWasPressed)
+                {
+                    pause = !pause;
+                    pWasPressed = true;
+                }
+            }
+            else
+            {
+                pWasPressed = false;
+            }
 
-		//	bool winScreen = true;
-		//	while (winScreen && !slShouldClose())
-		//	{
-		//		slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
-		//		slSetTextAlign(SL_ALIGN_CENTER);
-		//		slText(screenWidth / 2, 600, "YOU WIN!");
-		//		DrawWinScreen();
+            if (!pause)
+            {
+                // Movimiento
+                if (slGetKey(SL_KEY_RIGHT))
+                    paddle = MoveRight(paddle);
+                if (slGetKey(SL_KEY_LEFT))
+                    paddle = MoveLeft(paddle);
 
-		//		WINOPTION option = InputWinScreen();
-		//		switch (option)
-		//		{
-		//		case WINOPTION::MAINMENU:
-		//			exitGamePlay = true;
-		//			winScreen = false;
-		//			break;
-		//		case WINOPTION::PLAYAGAIN:
-		//			winScreen = false;
-		//			// Resetear el juego completo: reiniciar paddle, ball y bricks
-		//			paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
-		//			ball = CreateBall(640 / 2, 100, 5.0f, 5.0f, 12, 300.0f);
-		//			ball.isLaunched = false;
-		//			InitBricks(brick);
-		//			break;
-		//		default:
-		//			break;
-		//		}
+                UpdateBalls(paddle, brick);
+            }
 
+            UpdatePowerUp();         // para que caigan
+            UpdatePowerUpLogic(paddle);  // para aplicar si colisionan
 
-		//	}
-			slRender();
+            // Dibujar juego
+            slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+            DrawLives(paddle);
+            DrawPaddle(paddle);
+            DrawBalls();
+            DrawPowerUps();
+            DrawBricks(brick);
+            DrawPause();
 
-		/*}*/
-	}
+            if (!balls[0].isLaunched)
+                slText(170, 360, "Press 'L' to launch ball");
+
+            if (pause)
+            {
+                DrawPauseScreen();
+                PAUSE option = InputPauseScreen();
+                if (option == PAUSE::RESUME)
+                    pause = false;
+                else if (option == PAUSE::EXIT)
+                    currentState = GAMESTATE::MAINMENU;
+            }
+
+            if (WinCondition(brick))
+            {
+                currentState = GAMESTATE::WINSCREEN;
+            }
+
+            if (paddle.lives <= 0)
+            {
+                currentState = GAMESTATE::MAINMENU; // o GAMEOVER si lo tienes
+            }
+            break;
+        }
+
+        case GAMESTATE::WINSCREEN:
+        {
+            slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+            slText(screenWidth / 2 - 50, 600, "YOU WIN!");
+            DrawWinScreen();
+
+            WINOPTION option = InputWinScreen();
+            if (option == WINOPTION::MAINMENU)
+            {
+                currentState = GAMESTATE::MAINMENU;
+            }
+            else if (option == WINOPTION::PLAYAGAIN)
+            {
+               
+                paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
+                InitBalls();
+                InitBricks(brick);
+                currentState = GAMESTATE::PLAYING;
+            }
+            break;
+        }
+        }
+
+        slRender();
+    }
 }
 
 bool WinCondition(Brick brick[brickRow][brickCol])
@@ -145,23 +167,36 @@ bool WinCondition(Brick brick[brickRow][brickCol])
 
 WINOPTION InputWinScreen()
 {
+	static bool mouseWasPressed = false;
+
+	int mouseX = slGetMouseX();
+	int mouseY = slGetMouseY();
+
 	float buttonWidth = 200;
 	float buttonHeight = 80;
 	float x = screenWidth / 2;
 
-	float mouseX = slGetMouseX();
-	float mouseY = slGetMouseY();
+	float mainMenuY = 410;
+	float playAgainY = 510;
 
-	if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+	bool mousePressed = slGetMouseButton(SL_MOUSE_BUTTON_LEFT);
+
+	WINOPTION selected = WINOPTION::NONE;
+
+	if (mousePressed && !mouseWasPressed) // solo detecta el primer frame del click
 	{
-		if (IsInside(mouseX, mouseY, x, 410, buttonWidth, buttonHeight))
-			return WINOPTION::MAINMENU;
-
-		if (IsInside(mouseX, mouseY, x, 510, buttonWidth, buttonHeight))
-			return WINOPTION::PLAYAGAIN;
+		if (IsInside(mouseX, mouseY, x, mainMenuY, buttonWidth, buttonHeight))
+		{
+			selected = WINOPTION::MAINMENU;
+		}
+		else if (IsInside(mouseX, mouseY, x, playAgainY, buttonWidth, buttonHeight))
+		{
+			selected = WINOPTION::PLAYAGAIN;
+		}
 	}
 
-	return WINOPTION::NONE;
-
+	mouseWasPressed = mousePressed;
+	return selected;
 }
+
 

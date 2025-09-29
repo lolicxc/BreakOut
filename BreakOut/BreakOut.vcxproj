@@ -158,6 +158,7 @@ xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PauseScreen.cpp" />
+    <ClCompile Include="PowerUps.cpp" />
     <ClCompile Include="RunGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +167,11 @@ xcopy "$(SolutionDir)res" "$(OutDir)" /y</Command>
     <ClInclude Include="Bricks.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="PauseScreen.h" />
+    <ClInclude Include="PowerUps.h" />
     <ClInclude Include="RunGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

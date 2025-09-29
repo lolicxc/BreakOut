@@ -18,10 +18,9 @@ Paddle MoveRight(Paddle paddle)
 {
 	float deltaTime = slGetDeltaTime();
 	paddle.xPos += paddle.speed * deltaTime;
-	if (paddle.xPos + paddle.width > screenWidth)
+	if (paddle.xPos + paddle.width / 2 > screenWidth)
 	{
-		paddle.xPos = screenWidth - paddle.width;
-
+		paddle.xPos = screenWidth - paddle.width / 2;
 	}
 
 	return paddle;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PowerUps.h"
 struct Ball;
 
 struct Brick
@@ -14,8 +15,8 @@ struct Brick
 
 };
 
-const int brickRow = 1;
-const int  brickCol = 1;
+const int brickRow = 6;
+const int  brickCol = 9;
 
 void InitBricks(Brick brick[brickRow][brickCol]);
 void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol]);
