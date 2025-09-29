@@ -4,7 +4,7 @@
 
 void InitBricks(Brick brick[brickRow][brickCol])
 {
-	int initialDownPosition = 650;
+	int initialDownPosition = 600;
 	int spacingX = 3;
 	int spacingY = 5;
 
@@ -16,7 +16,7 @@ void InitBricks(Brick brick[brickRow][brickCol])
 			brick[i][j].height = 30;
 
 
-			brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 65;
+			brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 40;
 			brick[i][j].yPos = initialDownPosition - i * (brick[i][j].height + spacingY) - brick[i][j].height / 2;
 
 			brick[i][j].active = true;
@@ -28,62 +28,71 @@ void InitBricks(Brick brick[brickRow][brickCol])
 
 void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol])
 {
-    for (int i = 0; i < brickRow; i++)
-    {
-        for (int j = 0; j < brickCol; j++)
-        {
-            Brick& b = brick[i][j];
-            if (!b.active) continue;
+	for (int i = 0; i < brickRow; i++)
+	{
+		for (int j = 0; j < brickCol; j++)
+		{
+			Brick& b = brick[i][j];
 
-            float brickLeft = b.xPos - b.width / 2;
-            float brickRight = b.xPos + b.width / 2;
-            float brickTop = b.yPos - b.height / 2;
-            float brickBottom = b.yPos + b.height / 2;
+			if (!b.active)
+				continue;
 
-            float ballLeft = ball.xPos - ball.radius;
-            float ballRight = ball.xPos + ball.radius;
-            float ballTop = ball.yPos - ball.radius;
-            float ballBottom = ball.yPos + ball.radius;
+			// Datos del ladrillo
+			float brickLeft = b.xPos - b.width / 2;
+			float brickRight = b.xPos + b.width / 2;
+			float brickTop = b.yPos + b.height / 2;
+			float brickBottom = b.yPos - b.height / 2;
 
-            if (ballRight >= brickLeft &&
-                ballLeft <= brickRight &&
-                ballBottom >= brickTop &&
-                ballTop <= brickBottom)
-            {
-     
-                ball.hitBrick = true;
-                b.active = false;
+			// Datos de la pelota
+			float ballLeft = ball.xPos - ball.radius;
+			float ballRight = ball.xPos + ball.radius;
+			float ballTop = ball.yPos + ball.radius;
+			float ballBottom = ball.yPos - ball.radius;
 
-                float overlapLeft = ballRight - brickLeft;
-                float overlapRight = brickRight - ballLeft;
-                float overlapTop = ballBottom - brickTop;
-                float overlapBottom = brickBottom - ballTop;
+			// Verificamos colisión general
+			bool collisionX = ballRight >= brickLeft && ballLeft <= brickRight;
+			bool collisionY = ballTop >= brickBottom && ballBottom <= brickTop;
 
-               /* para ver por que eje la pelota entro menos en el ladrillo*/
-                float minOverlapX = std::min(overlapLeft, overlapRight);
-                float minOverlapY = std::min(overlapTop, overlapBottom);
+			if (collisionX && collisionY)
+			{
+				// Determinar qué lado golpeó: chequear la profundidad de penetración
+				float overlapLeft = ballRight - brickLeft;
+				float overlapRight = brickRight - ballLeft;
+				float overlapTop = brickTop - ballBottom;
+				float overlapBottom = ballTop - brickBottom;
 
-                if (minOverlapX < minOverlapY)
-                {
-                    // rebote en X
-                    ball.xVelocity *= -1;
-                    if (overlapLeft < overlapRight)
-                        ball.xPos -= minOverlapX;
-                    else
-                        ball.xPos += minOverlapX;
-                }
-                else
-                {
-                    // rebote en Y
-                    ball.yVelocity *= -1;
-                    if (overlapTop < overlapBottom)
-                        ball.yPos -= minOverlapY;
-                    else
-                        ball.yPos += minOverlapY;
-                }
+				// Determinar la menor superposición
+				bool ballFromLeft = overlapLeft < overlapRight;
+				bool ballFromBottom = overlapBottom < overlapTop;
 
-                return; // salir para no romper mas de un ladrillo
-            }
-        }
-    }
+				float minXOverlap = ballFromLeft ? overlapLeft : overlapRight;
+				float minYOverlap = ballFromBottom ? overlapBottom : overlapTop;
+
+				// Decide si rebotar en X o Y
+				if (minXOverlap < minYOverlap)
+				{
+					// Rebotar horizontal
+					ball.xVelocity *= -1;
+					if (ballFromLeft)
+						ball.xPos = brickLeft - ball.radius;
+					else
+						ball.xPos = brickRight + ball.radius;
+				}
+				else
+				{
+					// Rebotar vertical
+					ball.yVelocity *= -1;
+					if (ballFromBottom)
+						ball.yPos = brickBottom - ball.radius;
+					else
+						ball.yPos = brickTop + ball.radius;
+				}
+
+				b.active = false;
+				return;
+			}
+		}
+	}
 }
+
+

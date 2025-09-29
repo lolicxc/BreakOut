@@ -11,10 +11,11 @@ struct Brick
     bool active;
     int texture;
 
+
 };
 
-const int brickRow = 5;
-const int  brickCol = 9;
+const int brickRow = 1;
+const int  brickCol = 1;
 
 void InitBricks(Brick brick[brickRow][brickCol]);
 void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol]);

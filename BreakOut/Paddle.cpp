@@ -1,6 +1,6 @@
 #include "Paddle.h"
 #include "sl.h"
-
+#include  "Draw.h"
 Paddle CreatePaddle(int xPos, int yPos, int width, int height, float speed)
 {
 	Paddle paddle;
@@ -18,9 +18,9 @@ Paddle MoveRight(Paddle paddle)
 {
 	float deltaTime = slGetDeltaTime();
 	paddle.xPos += paddle.speed * deltaTime;
-	if (paddle.xPos + paddle.width > 720)
+	if (paddle.xPos + paddle.width > screenWidth)
 	{
-		paddle.xPos = 720 - paddle.width;
+		paddle.xPos = screenWidth - paddle.width;
 
 	}
 
@@ -31,9 +31,9 @@ Paddle MoveLeft(Paddle paddle)
 {
 	float deltaTime = slGetDeltaTime();
 	paddle.xPos -= paddle.speed * deltaTime;
-	if (paddle.xPos < 50)
+	if (paddle.xPos < 20)
 	{
-		paddle.xPos = 50;
+		paddle.xPos = 20;
 	}
 
 

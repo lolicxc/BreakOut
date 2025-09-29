@@ -2,6 +2,7 @@
 #include "sl.h"
 #include "MainMenu.h"
 #include <string>
+#include "Assets.h"
 
 void DrawMainMenu()
 {
@@ -20,8 +21,7 @@ void DrawMainMenu()
 
 void DrawButton(float x, float y, float width, float height, const char* text, bool hover)
 {
-    int button = slLoadTexture("../res/button.png");
-
+   
     if (hover)
     {
         slSetForeColor(0.6f, 0.2f, 0.7f, 1.0f); 
@@ -51,15 +51,11 @@ void DrawLives(Paddle& paddle)
 void DrawBall(Ball& ball)
 {
 
-    int spriteToDraw = ball.hitBrick ? ball.hitBallS : ball.normalBallS;
-    slSprite(spriteToDraw, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
-
-    ///*slCircleFill(ball.xPos, ball.yPos, ball.radius, 12);*/
-    //slSprite(ballAsset, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
+    slSprite(ballText, ball.xPos, ball.yPos, ball.radius * 2, ball.radius * 2);
     ball.hitBrick = false;
 }
 
-void DrawPaddle(Paddle paddle, int paddleAsset)
+void DrawPaddle(Paddle paddle)
 {
 	/*slRectangleFill(paddle.xPos, paddle.yPos, paddle.width, paddle.height);*/
     slSprite(paddleAsset, paddle.xPos, paddle.yPos, paddle.width, paddle.height);
@@ -72,7 +68,7 @@ void DrawWinner(Paddle& paddle1, Paddle& paddle2)
 
 void DrawCredits()
 {
-    int credits = slLoadTexture("../res/credits.png");
+   
     slSprite(credits, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
     slText(120, 180, "(Press 'Z' to back main menu)");
 }
@@ -86,7 +82,7 @@ void DrawPause()
     slSetFontSize(30);
 }
 
-void DrawBricks(Brick brick[brickRow][brickCol], int brickTextures[3])
+void DrawBricks(Brick brick[brickRow][brickCol])
 {
     
     for (int i = 0; i < brickRow; i++)
@@ -98,11 +94,36 @@ void DrawBricks(Brick brick[brickRow][brickCol], int brickTextures[3])
 
             if (!b.active) continue; 
 
-            float x = brick[i][j].xPos - brick[i][j].width / 2;
-            float y = brick[i][j].yPos - brick[i][j].height / 2;
-
-            slSprite(brickTextures[b.texture], x, y, b.width, b.height);
+            slSprite(brickTextures[b.texture], b.xPos, b.yPos, b.width, b.height);
         }
     }
 
+}
+
+void DrawPauseScreen()
+{
+    float buttonWidth = 200;
+    float buttonHeight = 80;
+    float x = screenWidth / 2; // centrado horizontal
+
+    float mouseX = slGetMouseX();
+    float mouseY = slGetMouseY();
+
+    DrawButton(x, 400, buttonWidth, buttonHeight, "Resume", IsInside(mouseX, mouseY, x, 400, buttonWidth, buttonHeight));
+    DrawButton(x, 300, buttonWidth, buttonHeight, "How to play", IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
+    DrawButton(x, 200, buttonWidth, buttonHeight, "Exit", IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
+
+}
+
+void DrawWinScreen()
+{
+    float buttonWidth = 200;
+    float buttonHeight = 80;
+    float x = screenWidth / 2; // centrado horizontal
+
+    float mouseX = slGetMouseX();
+    float mouseY = slGetMouseY();
+
+    DrawButton(x, 410, buttonWidth, buttonHeight, "Main menu", IsInside(mouseX, mouseY, x, 410, buttonWidth, buttonHeight));
+    DrawButton(x, 510, buttonWidth, buttonHeight, "Play again", IsInside(mouseX, mouseY, x, 510, buttonWidth, buttonHeight));
 }

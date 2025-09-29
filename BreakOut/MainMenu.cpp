@@ -1,13 +1,11 @@
 #include "MainMenu.h"
 #include "Draw.h"
 #include "Game.h"
-
+#include "Assets.h"
 
 void InitMainMenu()
 {
-	int background = slLoadTexture("../res/Background.PNG");
 
-	int font = slLoadFont("../res/LEGO.ttf");
 	slSetFont(font, 34);
 	bool exitGame = false;
 

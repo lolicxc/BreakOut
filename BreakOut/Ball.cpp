@@ -49,6 +49,7 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 		if (CheckCollisionWall(ball))
 		{
 			ball.xVelocity *= -1;
+			
 		}
 
 		// rebote contra paddle
@@ -100,12 +101,12 @@ bool CheckCollisionWall(Ball& ball)
 	{
 		ball.yPos = screenHeight - ball.radius;
 		ball.yVelocity *= -1;
-		ball.xVelocity *= -1;
 		return true;
 	}
 	else if (ball.xPos + ball.radius >= screenWidth)
 	{
 		ball.xPos = screenWidth - ball.radius;
+
 		return true;
 	}
 	else if (ball.xPos - ball.radius <= 0)
@@ -118,9 +119,7 @@ bool CheckCollisionWall(Ball& ball)
 
 void CheckLives(Ball& ball, Paddle& paddle)
 {
-	const float screenWidth = 640;
-	const float screenHeight = 720;
-
+	
 	if (ball.yPos - ball.radius <= 0)
 	{
 		paddle.lives--;
