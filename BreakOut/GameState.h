@@ -6,5 +6,6 @@ enum class GAMESTATE
     PLAYING,
     PAUSED,
     WINSCREEN,
+    GAMEOVERSCREEN,
     EXIT
 };

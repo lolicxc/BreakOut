@@ -14,7 +14,6 @@ void UpdatePowerUp()
 		{
 			powerUps[i].yPos -= powerUps[i].speedY * deltaTime;
 
-			// Si se va de la pantalla, lo desactivamos
 			if (powerUps[i].yPos < 0)
 			{
 				powerUps[i].active = false;
@@ -52,7 +51,7 @@ bool CheckCollisionPowerUp(PowerUp& p, Paddle& paddle)
 
 void ApplyPowerUpEffect(PowerUp& p, Paddle& paddle)
 {
-	const float maxPaddleWidth = 300.0f; 
+	const float maxPaddleWidth = 200.0f; 
 	switch (p.type)
 	{
 	case POWERUPTYPE::MAXPADDLE:
@@ -67,14 +66,11 @@ void ApplyPowerUpEffect(PowerUp& p, Paddle& paddle)
 		}
 		break;
 
-	case POWERUPTYPE::SHOOTPADDLE:
-		// lógica del shoot
-		break;
-
 	case POWERUPTYPE::THREEBALLS:
 		if (ballCount < maxBalls - 2)
 		{
-			// Clona la pelota actual (balls[0]) con variaciones
+			// clonar la pelota
+
 			balls[ballCount] = balls[0];
 			balls[ballCount].xVelocity *= -1;
 			ballCount++;
@@ -83,10 +79,6 @@ void ApplyPowerUpEffect(PowerUp& p, Paddle& paddle)
 			balls[ballCount].yVelocity *= -1;
 			ballCount++;
 		}
-		break;
-
-	case POWERUPTYPE::LAUNCH:
-		// lógica de auto-lanzar
 		break;
 	}
 }

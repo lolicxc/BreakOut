@@ -17,6 +17,14 @@ extern int font;
 
 extern int ballText;
 
+extern int powerUpAsset;
+extern int powerUpAsset2;
 
+extern int howToPlay;
+
+extern int backgroundSound;
+extern int bounceSound;
+extern int bookSound;
 
 void LoadAllTextures();
+void LoadAllAudio();

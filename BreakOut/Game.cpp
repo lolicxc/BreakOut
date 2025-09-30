@@ -13,7 +13,8 @@ void InitGame()
 
 	slWindow(screenWidth, screenHeight, "Simple SIGIL Example", false);
 	LoadAllTextures();
-	InitMainMenu();
+    LoadAllAudio();
+    GameLoop();  
 	slClose();
 }
 
@@ -21,7 +22,7 @@ void GameLoop()
 {
 	srand(time(NULL));
 
-	Paddle paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
+	Paddle paddle = CreatePaddle(640 / 2, 60, 95, 55, 800.0f);
 	Brick brick[brickRow][brickCol];
 	InitBricks(brick);
 
@@ -32,6 +33,7 @@ void GameLoop()
 	bool exitGamePlay = false;
 
 	GAMESTATE currentState = GAMESTATE::MAINMENU;
+
     while (!slShouldClose() && !exitGamePlay)
     {
         switch (currentState)
@@ -39,26 +41,12 @@ void GameLoop()
         case GAMESTATE::MAINMENU:
         {
             
-            MAINMENU option = InputMainMenu();
-            if (option == MAINMENU::PLAY)
-            {
-     
-                paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
-                InitBalls();
-                InitBricks(brick);
-                currentState = GAMESTATE::PLAYING;
-            }
-            else if (option == MAINMENU::EXIT)
-            {
-                exitGamePlay = true;
-            }
-            // Aquí podrías manejar otros estados como CREDITS si quieres
+            InitMainMenu(currentState, exitGamePlay, paddle, brick);
             break;
         }
 
         case GAMESTATE::PLAYING:
         {
-
             // Control pausa
             if (slGetKey('P'))
             {
@@ -87,7 +75,7 @@ void GameLoop()
             UpdatePowerUp();         // para que caigan
             UpdatePowerUpLogic(paddle);  // para aplicar si colisionan
 
-            // Dibujar juego
+            // Draw
             slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
             DrawLives(paddle);
             DrawPaddle(paddle);
@@ -96,17 +84,33 @@ void GameLoop()
             DrawBricks(brick);
             DrawPause();
 
-            if (!balls[0].isLaunched)
-                slText(170, 360, "Press 'L' to launch ball");
+            bool anyBallAlive = false;
+            for (int i = 0; i < ballCount; i++)
+            {
+                if (balls[i].isLaunched)  
+                {
+                    anyBallAlive = true;
+                    break;
+                }
+            }
+
+            if (!anyBallAlive) 
+            {
+                slText(180, 270, "Press 'L' to launch ball");
+            }
 
             if (pause)
             {
                 DrawPauseScreen();
                 PAUSE option = InputPauseScreen();
                 if (option == PAUSE::RESUME)
+                {
                     pause = false;
+                }
                 else if (option == PAUSE::EXIT)
+                {
                     currentState = GAMESTATE::MAINMENU;
+                }
             }
 
             if (WinCondition(brick))
@@ -116,7 +120,7 @@ void GameLoop()
 
             if (paddle.lives <= 0)
             {
-                currentState = GAMESTATE::MAINMENU; // o GAMEOVER si lo tienes
+                currentState = GAMESTATE::GAMEOVERSCREEN; // o GAMEOVER si lo tienes
             }
             break;
         }
@@ -127,12 +131,12 @@ void GameLoop()
             slText(screenWidth / 2 - 50, 600, "YOU WIN!");
             DrawWinScreen();
 
-            WINOPTION option = InputWinScreen();
-            if (option == WINOPTION::MAINMENU)
+            WINLOSEOPTION option = InputWinScreen();
+            if (option == WINLOSEOPTION::MAINMENU)
             {
                 currentState = GAMESTATE::MAINMENU;
             }
-            else if (option == WINOPTION::PLAYAGAIN)
+            else if (option == WINLOSEOPTION::PLAYAGAIN)
             {
                
                 paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
@@ -142,6 +146,26 @@ void GameLoop()
             }
             break;
         }
+        case GAMESTATE::GAMEOVERSCREEN:
+
+            slSprite(backgroundGame, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+            slText(screenWidth / 2 - 50, 600, "YOU LOSE!");
+            DrawWinScreen();
+
+            WINLOSEOPTION option = InputWinScreen();
+            if (option == WINLOSEOPTION::MAINMENU)
+            {
+                currentState = GAMESTATE::MAINMENU;
+            }
+            else if (option == WINLOSEOPTION::PLAYAGAIN)
+            {
+
+                paddle = CreatePaddle(640 / 2, 60, 65, 35, 800.0f);
+                InitBalls();
+                InitBricks(brick);
+                currentState = GAMESTATE::PLAYING;
+            }
+            break;
         }
 
         slRender();
@@ -157,15 +181,15 @@ bool WinCondition(Brick brick[brickRow][brickCol])
 		{
 			if (brick[i][j].active)
 			{
-				return false; // Si encontramos uno activo, no ganó todavía
+				return false; 
 			}
 		}
 	}
 
-	return true; // Si ninguno estaba activo, se ganó
+	return true; 
 }
 
-WINOPTION InputWinScreen()
+WINLOSEOPTION InputWinScreen()
 {
 	static bool mouseWasPressed = false;
 
@@ -181,17 +205,17 @@ WINOPTION InputWinScreen()
 
 	bool mousePressed = slGetMouseButton(SL_MOUSE_BUTTON_LEFT);
 
-	WINOPTION selected = WINOPTION::NONE;
+	WINLOSEOPTION selected = WINLOSEOPTION::NONE;
 
 	if (mousePressed && !mouseWasPressed) // solo detecta el primer frame del click
 	{
 		if (IsInside(mouseX, mouseY, x, mainMenuY, buttonWidth, buttonHeight))
 		{
-			selected = WINOPTION::MAINMENU;
+			selected = WINLOSEOPTION::MAINMENU;
 		}
 		else if (IsInside(mouseX, mouseY, x, playAgainY, buttonWidth, buttonHeight))
 		{
-			selected = WINOPTION::PLAYAGAIN;
+			selected = WINLOSEOPTION::PLAYAGAIN;
 		}
 	}
 

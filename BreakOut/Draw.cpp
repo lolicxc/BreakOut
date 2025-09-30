@@ -15,8 +15,9 @@ void DrawMainMenu()
 	float mouseY = slGetMouseY();
 
 	DrawButton(x, 400, buttonWidth, buttonHeight, "PLAY", IsInside(mouseX, mouseY, x, 400, buttonWidth, buttonHeight));
-	DrawButton(x, 300, buttonWidth, buttonHeight, "Credits", IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
-	DrawButton(x, 200, buttonWidth, buttonHeight, "Exit", IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
+	DrawButton(x, 320, buttonWidth, buttonHeight, "How to play", IsInside(mouseX, mouseY, x, 320, buttonWidth, buttonHeight));
+	DrawButton(x, 240, buttonWidth, buttonHeight, "Credits", IsInside(mouseX, mouseY, x, 240, buttonWidth, buttonHeight));
+	DrawButton(x, 160, buttonWidth, buttonHeight, "Exit", IsInside(mouseX, mouseY, x, 160, buttonWidth, buttonHeight));
 
 }
 
@@ -43,10 +44,10 @@ void DrawButton(float x, float y, float width, float height, const char* text, b
 
 void DrawLives(Paddle& paddle)
 {
-	slSetForeColor(1.0f, 0.0f, 0.0f, 1.0f);
+	
+	slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
 	std::string liveText = "Lives: " + std::to_string(paddle.lives);
 	slText(45, screenHeight - 55, liveText.c_str());
-	slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void DrawBall(Ball& ball)
@@ -76,11 +77,10 @@ void DrawCredits()
 
 void DrawPause()
 {
-	slSetFontSize(25);
-	slSetForeColor(1.0f, 0.0f, 0.0f, 1.0f);
-	slText(460, screenHeight - 55, "'P' to pause");
+
 	slSetForeColor(1.0f, 1.0f, 1.0f, 1.0f);
-	slSetFontSize(30);
+	slText(460, screenHeight - 55, "'P' to pause");
+
 }
 
 void DrawBricks(Brick brick[brickRow][brickCol])
@@ -111,8 +111,7 @@ void DrawPauseScreen()
 	float mouseY = slGetMouseY();
 
 	DrawButton(x, 400, buttonWidth, buttonHeight, "Resume", IsInside(mouseX, mouseY, x, 400, buttonWidth, buttonHeight));
-	DrawButton(x, 300, buttonWidth, buttonHeight, "How to play", IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
-	DrawButton(x, 200, buttonWidth, buttonHeight, "Exit", IsInside(mouseX, mouseY, x, 200, buttonWidth, buttonHeight));
+	DrawButton(x, 300, buttonWidth, buttonHeight, "Main menu", IsInside(mouseX, mouseY, x, 300, buttonWidth, buttonHeight));
 
 }
 
@@ -139,23 +138,22 @@ void DrawPowerUps()
 		switch (powerUps[i].type)
 		{
 		case POWERUPTYPE::MAXPADDLE:
-			slRectangleFill(powerUps[i].xPos, powerUps[i].yPos, 20, 20);
-			break;
-		case POWERUPTYPE::SHOOTPADDLE:
-			slRectangleFill(powerUps[i].xPos, powerUps[i].yPos, 20, 20);
+			slSprite(powerUpAsset, powerUps[i].xPos, powerUps[i].yPos, 30, 30);
 			break;
 		case POWERUPTYPE::THREEBALLS:
-			slRectangleFill(powerUps[i].xPos, powerUps[i].yPos, 20, 20);
-			break;
-		case POWERUPTYPE::LAUNCH:
-			slRectangleFill(powerUps[i].xPos, powerUps[i].yPos, 20, 20);
+			slSprite(powerUpAsset2, powerUps[i].xPos, powerUps[i].yPos, 30, 30);
 			break;
 		default:
-			slRectangleFill(powerUps[i].xPos, powerUps[i].yPos, 20, 20);
 			break;
 	
 		}
 
 	}
+}
+
+void DrawHowToPlay()
+{
+	slSprite(howToPlay, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+	slText(120, 80, "(Press 'Z' to back main menu)");
 }
 

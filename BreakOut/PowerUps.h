@@ -4,9 +4,7 @@
 enum class POWERUPTYPE
 {
 	MAXPADDLE,
-	SHOOTPADDLE,
 	THREEBALLS,
-	LAUNCH
 };
 struct PowerUp
 {

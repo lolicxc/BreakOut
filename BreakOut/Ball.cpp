@@ -2,6 +2,7 @@
 #include "sl.h"
 #include "Draw.h"
 #include "Paddle.h"
+#include "Assets.h"
 
 Ball balls[maxBalls];
 int ballCount = 1;
@@ -22,7 +23,7 @@ Ball CreateBall(int xPos, int yPos, float xVelocity, float yVelocity, int radius
 void InitBalls()
 {
 	ballCount = 1;
-	balls[0] = CreateBall(320, 100, 5.0f, 5.0f, 12, 300.0f);
+	balls[0] = CreateBall(320, 100, 5.0f, 5.0f, 20, 300.0f);
 	balls[0].isLaunched = false;
 	balls[0].isActive = true;
 }
@@ -95,6 +96,7 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 		// rebote contra paddle
 		if (CheckCollisionPaddle(ball, paddle))
 		{
+			slSoundPlay(bounceSound);
 			ball.yVelocity *= -1;
 
 
@@ -108,9 +110,9 @@ void Update(Ball& ball, Paddle& paddle, Brick brick[brickRow][brickCol])
 
 		if (ball.yPos + ball.radius < 0)
 		{
-			ball.isActive = false;  // la pelota ya no está activa
-			ball.isLaunched = false; // por las dudas, para que se reinicie después
-			return;                 // dejamos de actualizar
+			ball.isActive = false;  
+			ball.isLaunched = false; 
+			return;                
 		}
 	}
 }
@@ -160,7 +162,6 @@ bool CheckCollisionWall(Ball& ball)
 		ball.xPos = ball.radius;
 		ball.xVelocity *= -1;
 
-		// ⚡ evitar que quede con velocidad horizontal muy baja
 		if (fabs(ball.xVelocity) < 100.0f)
 		{
 			ball.xVelocity = (ball.xVelocity < 0 ? -1 : 1) * 100.0f;
@@ -178,6 +179,6 @@ void CheckLives(Paddle& paddle)
 
 	// Reinicia una sola pelota en el paddle
 	ballCount = 1;
-	balls[0] = CreateBall(paddle.xPos, paddle.yPos + paddle.height / 2 + 12, 5.0f, 5.0f, 12, 300.0f);
+	balls[0] = CreateBall(paddle.xPos, paddle.yPos + paddle.height / 2 + 12, 5.0f, 5.0f, 20, 300.0f);
 	balls[0].isLaunched = false;
 }

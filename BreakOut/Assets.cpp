@@ -12,7 +12,15 @@ int paddleAsset;
 int font;
 
 int ballText;
+int powerUpAsset;
+int powerUpAsset2;
 
+int howToPlay;
+
+//sonidos
+int backgroundSound;
+int bounceSound;
+int bookSound;
 
 void LoadAllTextures()
 {
@@ -28,5 +36,16 @@ void LoadAllTextures()
 	button = slLoadTexture("../res/button.png");
 
 	credits = slLoadTexture("../res/credits.png");
-	font = slLoadFont("../res/LEGO.ttf");
+	font = slLoadFont("../res/Baisteach.ttf");
+	powerUpAsset = slLoadTexture("../res/power.png");
+	powerUpAsset2 = slLoadTexture("../res/power2.png");
+	howToPlay = slLoadTexture("../res/HowToPlay.png");
+}
+
+void LoadAllAudio()
+{
+	backgroundSound = slLoadWAV("../res/music.wav");
+	bounceSound = slLoadWAV("../res/bounce.wav");
+	bookSound = slLoadWAV("../res/bookSound.wav");
+	slSoundLoop(backgroundSound);
 }

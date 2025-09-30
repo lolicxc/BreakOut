@@ -3,7 +3,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 
-enum class WINOPTION
+enum class WINLOSEOPTION
 {
 	NONE,
 	MAINMENU,
@@ -13,6 +13,6 @@ enum class WINOPTION
 void InitGame();
 void GameLoop();
 bool WinCondition(Brick brick[brickRow][brickCol]);
-WINOPTION InputWinScreen();
+WINLOSEOPTION InputWinScreen();
 
 

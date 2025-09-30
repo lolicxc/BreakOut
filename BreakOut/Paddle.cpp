@@ -9,6 +9,7 @@ Paddle CreatePaddle(int xPos, int yPos, int width, int height, float speed)
 	paddle.width = width;
 	paddle.height = height;
 	paddle.speed = speed;
+	paddle.lives = 3;
 
 	return paddle;
 

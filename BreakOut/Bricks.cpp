@@ -2,6 +2,8 @@
 #include "Bricks.h"
 #include "Ball.h"
 #include "PowerUps.h"
+#include "Assets.h"
+#include "sl.h"
 
 void InitBricks(Brick brick[brickRow][brickCol])
 {
@@ -14,7 +16,7 @@ void InitBricks(Brick brick[brickRow][brickCol])
 		for (int j = 0; j < brickCol; j++)
 		{
 			brick[i][j].width = 60;
-			brick[i][j].height = 30;
+			brick[i][j].height = 40;
 
 
 			brick[i][j].xPos = j * (brick[i][j].width + spacingX) + brick[i][j].width / 2 + 40;
@@ -90,7 +92,7 @@ void BricksCollision(Ball& ball, Brick brick[brickRow][brickCol])
 				}
 
 				b.active = false;
-
+				slSoundPlay(bookSound);
 				if (rand() % 100 < 30) // 30% chance
 				{
 					for (int k = 0; k < maxPowerUps; k++)

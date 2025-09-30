@@ -20,3 +20,4 @@ void DrawBricks(Brick brick[brickRow][brickCol]);
 void DrawPauseScreen();
 void DrawWinScreen();
 void DrawPowerUps();
+void DrawHowToPlay();

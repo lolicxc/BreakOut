@@ -15,7 +15,7 @@ PAUSE InputPauseScreen()
     float x = screenWidth / 2;
 
     float resumeY = 400;
-    float exitY = 200;
+    float exitY = 300;
 
     bool mousePressed = slGetMouseButton(SL_MOUSE_BUTTON_LEFT);
 
