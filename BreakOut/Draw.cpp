@@ -72,7 +72,7 @@ void DrawCredits()
 {
 
 	slSprite(credits, screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
-	slText(120, 180, "(Press 'Z' to back main menu)");
+	slText(120, 120, "(Press 'Z' to back main menu)");
 }
 
 void DrawPause()
